@@ -1,31 +1,40 @@
 package com.example.demo.view
 
-import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import tornadofx.*
 import java.io.File
+import java.nio.file.CopyOption
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+import java.util.*
+import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class MainView : View("DirectoryChooser") {
     override val root = borderpane()
 
-    private lateinit var brandingRootPath: TextField
-    private lateinit var assetsToCopyPath: TextField
-    private var assetsToCopyRoot: File? = null
+    private lateinit var brandingRootTf: TextField
+    private lateinit var assetsToCopyTf: TextField
+    private var assetsToCopy: File? = null
     private var brandingRoot: File? = null
+    private var brandings: List<File>? = null
+    private var assets: List<File>? = null
+    private var copyAssets: MutableList<File> = mutableListOf()
 
     init {
         with(root) {
             title = "CopyAssets"
             center = form {
                 fieldset("Selecciona carpetas") {
-                    field("Carpeta raiz de branding") {
+                    field("Carpeta raiz de brandings") {
                         hbox {
-                            brandingRootPath = textfield()
+                            brandingRootTf = textfield()
                             button("open") {
                                 action {
                                     brandingRoot = chooseDirectory("Single + non/block")
-                                    if(brandingRoot != null) {
-                                        brandingRootPath.text = "${brandingRoot}"
+                                    if (brandingRoot != null) {
+                                        brandingRootTf.text = "${brandingRoot}"
                                     }
                                 }
                             }
@@ -33,20 +42,34 @@ class MainView : View("DirectoryChooser") {
                     }
                     field("Carpeta principal assets") {
                         hbox {
-                            assetsToCopyPath = textfield()
+                            assetsToCopyTf = textfield()
                             button("open") {
                                 action {
-                                    assetsToCopyRoot = chooseDirectory("Single + non/block")
-                                    if(assetsToCopyRoot != null) {
-                                        assetsToCopyPath.text = "${assetsToCopyRoot}"
+                                    assetsToCopy = chooseDirectory("Single + non/block")
+                                    if (assetsToCopy != null) {
+                                        assetsToCopyTf.text = "${assetsToCopy}"
                                     }
                                 }
                             }
                         }
                     }
                     button("Copiar").setOnAction {
-                        println("Button 1 Pressed")
-                        title = "Ola k tal"
+                        brandings = Arrays.stream(brandingRoot?.listFiles()).filter { it.name != ".DS_Store" }.toList();
+                        assets = Arrays.stream(assetsToCopy?.listFiles()).collect(Collectors.toList());
+                        brandings?.forEach { branding ->
+                            val brandingAssets =
+                                branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)?.listFiles()
+                                    ?.toList()
+                            assets?.forEach { assetToCompare ->
+                                if(!brandingAssets?.map { it.name }?.contains(assetToCompare.name)!!) {
+                                    copyAssets.add(assetToCompare)
+                                }
+                            }
+                            copyAssets.forEach {
+                                Files.copy(it.toPath(), Paths.get(branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)?.toString() + it.name), StandardCopyOption.REPLACE_EXISTING);
+                                println("Copying " + it.name + " to " + branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)!!)
+                            }
+                        }
                     }
                 }
             }
