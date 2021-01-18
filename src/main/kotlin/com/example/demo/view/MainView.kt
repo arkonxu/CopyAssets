@@ -1,6 +1,8 @@
 package com.example.demo.view
 
+import javafx.scene.control.Alert
 import javafx.scene.control.TextField
+import org.apache.commons.io.FileUtils
 import tornadofx.*
 import java.io.File
 import java.nio.file.CopyOption
@@ -65,9 +67,28 @@ class MainView : View("DirectoryChooser") {
                                     copyAssets.add(assetToCompare)
                                 }
                             }
-                            copyAssets.forEach {
-                                Files.copy(it.toPath(), Paths.get(branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)?.toString() + it.name), StandardCopyOption.REPLACE_EXISTING);
-                                println("Copying " + it.name + " to " + branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)!!)
+                            if(!copyAssets.isEmpty()) {
+                                copyAssets.forEach {
+                                    Files.copy(
+                                        it.toPath(),
+                                        Paths.get(branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)
+                                            ?.toString() + "/" + it.name
+                                        ),
+                                        StandardCopyOption.REPLACE_EXISTING
+                                    )
+                                    FileUtils.copyDirectory(
+                                        it,
+                                        Paths.get(branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)
+                                            ?.toString() + "/" + it.name
+                                        ).toFile()
+                                    )
+                                    println(
+                                        "Copying " + it.name + " to " + branding.listFiles()
+                                            ?.filter { it.name == "Assets.xcassets" }?.get(0)!!
+                                    )
+                                }
+                            } else {
+                                alert(Alert.AlertType.ERROR, "Error", "No hay ningun archivo para copiar", owner = currentWindow)
                             }
                         }
                     }
