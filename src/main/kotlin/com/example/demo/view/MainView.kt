@@ -62,41 +62,53 @@ class MainView : View("DirectoryChooser") {
                         }
                     }
                     button("Copiar").setOnAction {
-                        brandings = Arrays.stream(brandingRoot?.listFiles()).filter { it.name != ".DS_Store" }.toList();
-                        assets = Arrays.stream(assetsToCopy?.listFiles()).collect(Collectors.toList());
-                        brandings?.forEach { branding ->
-                            if(branding.path != assetsToCopy?.parent) {
-                                val brandingAssets =
-                                    branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)?.listFiles()
-                                        ?.toList()
-                                assets?.forEach { assetToCompare ->
-                                    if (!brandingAssets?.map { it.name }?.contains(assetToCompare.name)!!) {
-                                        copyAssets.add(assetToCompare)
+                        if (brandingRoot != null && assetsToCopy != null) {
+                            brandings =
+                                Arrays.stream(brandingRoot?.listFiles()).filter { it.name != ".DS_Store" }.toList();
+                            assets = Arrays.stream(assetsToCopy?.listFiles()).collect(Collectors.toList());
+                            brandings?.forEach { branding ->
+                                if (branding.path != assetsToCopy?.parent) {
+                                    val brandingAssets =
+                                        branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)
+                                            ?.listFiles()
+                                            ?.toList()
+                                    assets?.forEach { assetToCompare ->
+                                        if (!brandingAssets?.map { it.name }?.contains(assetToCompare.name)!!) {
+                                            copyAssets.add(assetToCompare)
+                                        }
                                     }
-                                }
-                                if (!copyAssets.isEmpty()) {
-                                    copyAssets.forEach { asset ->
-                                        FileUtils.copyDirectory(
-                                            asset,
-                                            Paths.get(
-                                                branding.listFiles()?.filter { it.name == "Assets.xcassets" }?.get(0)
-                                                    ?.toString() + "/" + asset.name
-                                            ).toFile()
-                                        )
-                                        println(
-                                            "Copying " + asset.name + " to " + branding.listFiles()
-                                                ?.filter { it.name == "Assets.xcassets" }?.get(0)!!
+                                    if (!copyAssets.isEmpty()) {
+                                        copyAssets.forEach { asset ->
+                                            FileUtils.copyDirectory(
+                                                asset,
+                                                Paths.get(
+                                                    branding.listFiles()?.filter { it.name == "Assets.xcassets" }
+                                                        ?.get(0)
+                                                        ?.toString() + "/" + asset.name
+                                                ).toFile()
+                                            )
+                                            println(
+                                                "Copying " + asset.name + " to " + branding.listFiles()
+                                                    ?.filter { it.name == "Assets.xcassets" }?.get(0)!!
+                                            )
+                                        }
+                                    } else {
+                                        alert(
+                                            Alert.AlertType.ERROR,
+                                            "Error",
+                                            "No hay ningun archivo para copiar",
+                                            owner = currentWindow
                                         )
                                     }
-                                } else {
-                                    alert(
-                                        Alert.AlertType.ERROR,
-                                        "Error",
-                                        "No hay ningun archivo para copiar",
-                                        owner = currentWindow
-                                    )
                                 }
                             }
+                        } else {
+                            alert(
+                                Alert.AlertType.ERROR,
+                                "Error",
+                                "Tienes que seleccionar la carpeta root de Targets y la carpeta principal de Assets",
+                                owner = currentWindow
+                            )
                         }
                     }
                 }

@@ -1,7 +1,5 @@
 package com.example.demo.app
 
-import javafx.geometry.Pos
-import javafx.scene.control.ButtonBar
 import javafx.scene.text.FontWeight
 import tornadofx.Stylesheet
 import tornadofx.box
