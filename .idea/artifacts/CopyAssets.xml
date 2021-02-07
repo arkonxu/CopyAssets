@@ -1,0 +1,48 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="CopyAssets">
+    <output-path>$PROJECT_DIR$/out/artifacts/CopyAssets</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.example.demo.app.MyApp" />
+        <option name="description" value="" />
+        <option name="enabledSigning" value="true" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="macIcon" value="$PROJECT_DIR$/src/main/kotlin/com/example/demo/view/odiloLogo.png" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="msgOutputLevel" value="Verbose" />
+        <option name="nativeBundle" value="dmg" />
+        <option name="title" value="CopyAssets" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="CopyAssets.jar">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+          <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.1.2" />
+          <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:2.0.1" />
+          <element id="library" level="project" name="Maven: no.tornado:tornadofx:1.7.17" />
+          <element id="library" level="project" name="Maven: org.apache.maven.shared:maven-shared-utils:3.0.0" />
+          <element id="library" level="project" name="Maven: org.glassfish:javax.json:1.1.2" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.2.60" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.60" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.2.60" />
+          <element id="library" level="project" name="Maven: org.jetbrains:annotations:13.0" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-base:15.0.1" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-base:mac:15.0.1" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:15.0.1" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:mac:15.0.1" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:15.0.1" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:mac:15.0.1" />
+        </element>
+        <element id="module-output" name="CopyAssets" />
+      </element>
+    </root>
+  </artifact>
+</component>
