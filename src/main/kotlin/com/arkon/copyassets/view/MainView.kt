@@ -1,4 +1,4 @@
-package com.example.demo.view
+package com.arkon.copyassets.view
 
 import javafx.scene.control.Alert
 import javafx.scene.control.TextField
